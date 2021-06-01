@@ -8,7 +8,12 @@ class Config:
         MAIL_USE_TLS = True
         MAIL_USERNAME = os.environ.get('EMAIL_USER')
         MAIL_PASSWORD = os.environ.get('EMAIL_PASS')
+        GOOGLE_CLIENT_ID = "714941756765-pqgsjlv2g0b8qd9bmnlc09s4jgiejn5l.apps.googleusercontent.com"
+        GOOGLE_CLIENT_SECRET = "4_GJcHiYsahL73KFc6Q12agt"
+        GITHUB_CLIENT_ID = "7ea8941cf78bef72ee2c"
+        GITHUB_CLIENT_SECRET = "bf850fe7303c5d0fc7fdc446ce9f01379cbcc7cc"
 
 
-obj = Config()
-print(obj.SECRET_KEY)
+
+# obj = Config()
+# print(obj.SECRET_KEY)

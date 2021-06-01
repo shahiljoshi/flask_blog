@@ -44,9 +44,21 @@
             </small>
         </form>
     </div>
+    <div >
+       <center> <legend>Login With</legend>
+           <a href="{{ url_for('users.google_login') }}" type="button" class="col-3 btn btn-danger " ><p class="fa fa-google"> | </p>Google</a>
+            <a href="{{ url_for('users.github_login') }}" type="button" class="col-3 btn btn-dark"><p class="fa fa-github"> |  </p>Github</a>
+       </center>
+
+    </div>
+
     <div class="border-top pt-3">
         <small class="text-muted">
             Need An Account? <a class="ml-2" href="{{ url_for('users.register') }}">Sign Up Now</a>
+
         </small>
+{#        <a href="{{ url_for('users.google_login') }}" >Google</a>#}
+{#        <a href="{{ url_for('users.github_login') }}" >Github</a>#}
+
     </div>
 {% endblock content %}
