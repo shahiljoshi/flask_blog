@@ -3,7 +3,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from flaskblog import db, bcrypt
 from flaskblog.models import User, Post
 from flaskblog.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
-                                   RequestResetForm, ResetPasswordForm)
+                                   RequestResetForm, ResetPasswordForm,ChangePasswordForm)
 from flaskblog.users.utils import save_picture, send_reset_email
 from authlib.integrations.flask_client import OAuth
 from flaskblog import oauth
@@ -39,6 +39,7 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
+            flash('Login successful.', 'success')
             return redirect(next_page) if next_page else redirect(url_for('main.home'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
@@ -95,6 +96,23 @@ def reset_request():
     return render_template('reset_request.html', title='Reset Password', form=form)
 
 
+@users.route("/changepassword", methods=['GET', 'POST'])
+def change_password():
+    if current_user.is_authenticated:
+        form = ChangePasswordForm()
+        user = current_user
+        if form.validate_on_submit():
+            if bcrypt.check_password_hash(user.password, form.old_password.data):
+                hashed_password = bcrypt.generate_password_hash(form.new_password.data).decode('utf-8')
+                user.password = hashed_password
+                db.session.commit()
+                flash('Your password has been updated! You are now able to log in', 'success')
+                return redirect(url_for('users.login'))
+            else:
+                flash('Unsuccessful. Please check old password', 'danger')
+    return render_template('changepassword.html', title='Change Password', form=form)
+
+
 @users.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
     if current_user.is_authenticated:
@@ -141,6 +159,7 @@ def google_authorize():
         login_user(user1)
     print(f"\n{resp}\n{username}\n{email}")
     next_page = request.args.get('next')
+    flash('Login successful.', 'success')
     return redirect(next_page) if next_page else redirect(url_for('main.home'))
 
     # return redirect(url_for('main.home'))
@@ -160,6 +179,6 @@ def github_authorize():
     github = oauth.create_client('github')
     token = github.authorize_access_token()
     resp = github.get('user').json()
-
     print(f"\n{resp}\n")
-    return "You are successfully signed in using github"
+    return redirect(url_for('main.home'))
+
