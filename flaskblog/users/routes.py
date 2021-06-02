@@ -185,17 +185,17 @@ def github_authorize():
 
     username = resp['login']
     # email = resp['email']
-    # user1 = User.query.filter_by(email=email).first()
-    # if not user1:
-    user = User(username=username, email="", password="abc")
-    db.session.add(user)
-    db.session.commit()
-    login_user(user)
-    # else:
-    #     login_user(user1)
+    user1 = User.query.filter_by(username=username).first()
+    if not user1:
+        user = User(username=username, email="", password="abc")
+        db.session.add(user)
+        db.session.commit()
+        login_user(user)
+    else:
+         login_user(user1)
     print(f"\n{resp}\n{username}")
     next_page = request.args.get('next')
-    flash('Login successful.', 'success')
+    flash('Login successful.Please Update Your Email', 'success')
     return redirect(next_page) if next_page else redirect(url_for('main.home'))
 
     # return redirect(url_for('main.home'))

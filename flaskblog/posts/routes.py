@@ -1,3 +1,4 @@
+from click import command
 from flask import (render_template, url_for, flash,
                    redirect, request, abort, Blueprint)
 from flask_login import current_user, login_required
@@ -62,16 +63,33 @@ def delete_post(post_id):
 
 @posts.route("/post/<int:post_id>/comment", methods=["GET", "POST"])
 @login_required
+# def comment_post(post_id):
+#     post = Post.query.get_or_404(post_id)
+#     posts = Post.query.all()
+#     form = AddCommentForm()
+#     if request.method == 'POST': # this only gets executed when the form is submitted and not when the page loads
+#         if form.validate_on_submit():
+#             text = request.form.get('text')
+#             comment = Comment(text=text,post_id=post.id)
+#             db.session.add(comment)
+#             db.session.commit()
+#             flash("Your comment has been added to the post", "success")
+#             return redirect(request.url)
+#     return render_template('comment_post.html', title='Comment Post', form=form, post=post,posts=posts)
+
+
+# @app.route("/post/<int:post_id>/comment", methods=["GET", "POST"])
+# @login_required
 def comment_post(post_id):
     post = Post.query.get_or_404(post_id)
-    posts = Post.query.all()
     form = AddCommentForm()
-    if request.method == 'POST': # this only gets executed when the form is submitted and not when the page loads
-        if form.validate_on_submit():
-            text = request.form.get('text')
-            comment = Comment(text=text,post_id=post.id)
-            db.session.add(comment)
-            db.session.commit()
-            flash("Your comment has been added to the post", "success")
-            return redirect(request.url)
-    return render_template('comment_post.html', title='Comment Post', form=form, post=post,posts=posts)
+    if form.validate_on_submit():
+        comment = Comment(text=form.text.data,post_id=post.id)
+        db.session.add(comment)
+        print(comment.text)
+        comment_text=comment.text
+        db.session.commit()
+        flash("Your comment has been added to the post", "success")
+        return redirect(url_for("posts.post", post_id=post.id))
+    return render_template("comment_post.html", title="Comment Post", form=form,post_id=post_id)
+

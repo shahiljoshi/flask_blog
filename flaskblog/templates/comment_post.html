@@ -1,7 +1,7 @@
 {% extends "layout.html"%}
 {% block content %}
 <div class="content-section">
-        <form method="POST" action="{{ url_for('posts.comment_post', post_id=post_id) }}">
+        <form method="POST" action="{{ url_for('posts.comment_post', post_id=post.id) }}">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Comment</legend>

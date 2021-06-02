@@ -65,17 +65,21 @@
             {% block content %}{% endblock %}
 
         </div>
-        <div class="col-md-4">
-          <div class="content-section">
-            <h3>Sort By</h3>
-            <p class='text-muted'>See Your Posts.
-              <ul class="list-group">
-              <li class="list-group-item list-group-item-light"  ><a href="{{ url_for('users.user_posts', username=current_user.username) }}">My Posts</a></li>
-              </ul>
-            </p>
+
+            <div class="col-md-4">
+              <div class="content-section">
+                <h3>Sort By</h3>
+                <p class='text-muted'>See Your Posts.
+                    {% if current_user.is_authenticated %}
+                      <ul class="list-group">
+                      <li class="list-group-item list-group-item-light"  ><a href="{{ url_for('users.user_posts', username=current_user.username) }}">My Posts</a></li>
+                      </ul>
+                    {% endif %}
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+
     </main>
 
     <!-- Optional JavaScript -->

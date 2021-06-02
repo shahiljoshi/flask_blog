@@ -27,25 +27,16 @@
 {#                        <button class="btn btn-success my-2 my-sm-0" type="submit">Post</button>#}
 {#      </form>#}
 {#    #}
-        <form class="form form-horizontal col-md-12" method="post" role="form">
+{#        <form class="form form-horizontal col-md-12" method="post" role="form">#}
 
-              <input class="form-control mr-sm-2" name="text" type="text" placeholder="Comment" aria-label="Search" required>
+{#              <input class="form-control mr-sm-2" name="text" type="text" placeholder="Comment" aria-label="Search" required>#}
 {#                        <button class="btn btn-success my-2 my-sm-0" type="submit">Post</button>#}
-            <br>
-            <br>
-                <button type='submit' class="btn btn-primary" id='submit'>Submit</button>
-        </form>
+{#            <br>#}
+{#            <br>#}
+{#                <button type='submit' class="btn btn-primary" id='submit'>Submit</button>#}
+{#        </form>#}
 
-    {% if post.comments %}
-                {% if post.comments.count() > 0 %}
-                    <h2>Comments</h2>
-                    <p>
-                    {% for comment in post.comments %}
-                        <p>{{ comment.text }}</p>
-                    {% endfor %}
-                    </p>
-                {% endif %}
-    {% endif %}
+
   <!-- Modal -->
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
