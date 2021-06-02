@@ -155,6 +155,7 @@ def google_authorize():
         user = User(username=username, email=email,password="abc")
         db.session.add(user)
         db.session.commit()
+        login_user(user)
     else:
         login_user(user1)
     print(f"\n{resp}\n{username}\n{email}")
@@ -176,9 +177,26 @@ def github_login():
 # Github authorize route
 @users.route('/login/github/authorize')
 def github_authorize():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.home'))
     github = oauth.create_client('github')
     token = github.authorize_access_token()
     resp = github.get('user').json()
-    print(f"\n{resp}\n")
-    return redirect(url_for('main.home'))
+
+    username = resp['login']
+    # email = resp['email']
+    # user1 = User.query.filter_by(email=email).first()
+    # if not user1:
+    user = User(username=username, email="", password="abc")
+    db.session.add(user)
+    db.session.commit()
+    login_user(user)
+    # else:
+    #     login_user(user1)
+    print(f"\n{resp}\n{username}")
+    next_page = request.args.get('next')
+    flash('Login successful.', 'success')
+    return redirect(next_page) if next_page else redirect(url_for('main.home'))
+
+    # return redirect(url_for('main.home'))
 

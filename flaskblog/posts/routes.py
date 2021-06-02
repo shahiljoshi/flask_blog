@@ -2,8 +2,8 @@ from flask import (render_template, url_for, flash,
                    redirect, request, abort, Blueprint)
 from flask_login import current_user, login_required
 from flaskblog import db
-from flaskblog.models import Post
-from flaskblog.posts.forms import PostForm
+from flaskblog.models import Post,Comment
+from flaskblog.posts.forms import PostForm,AddCommentForm
 
 posts = Blueprint('posts', __name__)
 
@@ -58,3 +58,20 @@ def delete_post(post_id):
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('main.home'))
+
+
+@posts.route("/post/<int:post_id>/comment", methods=["GET", "POST"])
+@login_required
+def comment_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    posts = Post.query.all()
+    form = AddCommentForm()
+    if request.method == 'POST': # this only gets executed when the form is submitted and not when the page loads
+        if form.validate_on_submit():
+            text = request.form.get('text')
+            comment = Comment(text=text,post_id=post.id)
+            db.session.add(comment)
+            db.session.commit()
+            flash("Your comment has been added to the post", "success")
+            return redirect(request.url)
+    return render_template('comment_post.html', title='Comment Post', form=form, post=post,posts=posts)
