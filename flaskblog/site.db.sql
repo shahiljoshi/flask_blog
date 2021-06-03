@@ -1,0 +1,33 @@
+BEGIN TRANSACTION;
+CREATE TABLE IF NOT EXISTS "post_like" (
+	"id"	INTEGER PRIMARY KEY AUTOINCREMENT,
+	"user_id"	INTEGER,
+	"post_id"	INTEGER
+);
+CREATE TABLE IF NOT EXISTS "comment" (
+	"id"	INTEGER NOT NULL,
+	"body"	VARCHAR(100) NOT NULL,
+	"timestamp"	DATETIME NOT NULL,
+	"post_id"	INTEGER NOT NULL,
+	"author"	TEXT,
+	PRIMARY KEY("id"),
+	FOREIGN KEY("post_id") REFERENCES "post"("id")
+);
+CREATE TABLE IF NOT EXISTS "post" (
+	"id"	INTEGER NOT NULL,
+	"title"	VARCHAR(100) NOT NULL,
+	"date_posted"	DATETIME NOT NULL,
+	"content"	TEXT NOT NULL,
+	"user_id"	INTEGER NOT NULL,
+	FOREIGN KEY("user_id") REFERENCES "user"("id"),
+	PRIMARY KEY("id")
+);
+CREATE TABLE IF NOT EXISTS "user" (
+	"id"	INTEGER NOT NULL,
+	"username"	VARCHAR(20) NOT NULL UNIQUE,
+	"email"	VARCHAR(120) NOT NULL UNIQUE,
+	"image_file"	VARCHAR(20) NOT NULL,
+	"password"	VARCHAR(60) NOT NULL,
+	PRIMARY KEY("id")
+);
+COMMIT;
